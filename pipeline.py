@@ -95,6 +95,7 @@ def event_count(merged_df):
             data_dct['education'].append(edu)
     
     atk_vs_edu = pd.DataFrame.from_dict(data_dct)
+    atk_vs_edu.nattacks.fillna(0, inplace=True)
     return atk_vs_edu
 
 if __name__ == "__main__":
