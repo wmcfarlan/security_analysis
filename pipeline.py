@@ -57,7 +57,7 @@ def create_combined_frame(primary_df, secondary_df):
         df_lst.append(num)
     
     merged_df = pd.concat(df_lst, axis=1)
-    merged_df = merged_df.apply(lambda row: row.fillna(row.mean()), axis=1)
+    # merged_df = merged_df.apply(lambda row: row.fillna(row.mean()), axis=1)
     merged_df['country'] = merged_df.index
     merged_df.reset_index(drop=True)
     
