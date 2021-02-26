@@ -47,14 +47,24 @@ def find_ratios(df, dum_col):
 #     merged_df = pd.concat(df_lst)
 #     return merged_df
 
-def create_combined_frame(primary_df, secondary_df):
+def create_combined_frame(primary_df, secondary_df, region=None):
     year_lst = [num for num in range(1970, 2011, 5)]
     df_lst = []
-    for num, year in enumerate(year_lst):
-        attack_count = primary_df[(primary_df.iyear >= year) & (primary_df.iyear <= (year + 4))].country_txt.value_counts()
-        year_df = pd.DataFrame(data = [attack_count.values], columns = attack_count.index)
-        num = year_df.T.rename(columns={0: f'{year}_events'})
-        df_lst.append(num)
+    if region:
+        for num, year in enumerate(year_lst):
+            attack_count = primary_df[(primary_df.iyear >= year)
+                & (primary_df.iyear <= (year + 4))
+                & (primary_df.region_txt == region)].country_txt.value_counts()
+            year_df = pd.DataFrame(data = [attack_count.values], columns = attack_count.index)
+            num = year_df.T.rename(columns={0: f'{year}_events'})
+            df_lst.append(num)
+    else:
+        for num, year in enumerate(year_lst):
+            attack_count = primary_df[(primary_df.iyear >= year)
+                & (primary_df.iyear <= (year + 4))].country_txt.value_counts()
+            year_df = pd.DataFrame(data = [attack_count.values], columns = attack_count.index)
+            num = year_df.T.rename(columns={0: f'{year}_events'})
+            df_lst.append(num)
     
     merged_df = pd.concat(df_lst, axis=1)
     # merged_df = merged_df.apply(lambda row: row.fillna(row.mean()), axis=1)
